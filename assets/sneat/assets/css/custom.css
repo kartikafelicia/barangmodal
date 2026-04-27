@@ -1,0 +1,21 @@
+/* ==============================
+   MODAL SCROLL FIX (PENERIMAAN)
+============================== */
+
+#modalPengadaan .modal-dialog,
+#modalHibah .modal-dialog,
+#modalInstansi .modal-dialog {
+  max-height: 90vh;
+}
+
+#modalPengadaan .modal-body,
+#modalHibah .modal-body,
+#modalInstansi .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-dialog-scrollable .modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}

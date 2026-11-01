@@ -27,17 +27,30 @@ class Master_barang_model extends CI_Model {
         return $this->db->insert($this->table, $data);
     }
 
-    public function count_all()
+    public function count_all($keyword = null)
     {
-        return $this->db->count_all($this->table);
+        if ($keyword) {
+            $this->db->group_start();
+            $this->db->like('nama_barang', $keyword);
+            $this->db->or_like('kode_barang', $keyword);
+            $this->db->or_like('lokasi', $keyword);
+            $this->db->group_end();
+        }
+
+        return $this->db->count_all_results('master_barang_modal');
     }
 
-    public function get_paginated($limit, $start)
+    public function get_paginated($limit, $start, $keyword = null)
     {
-        return $this->db
-                    ->limit($limit, $start)
-                    ->order_by('id', 'ASC')
-                    ->get($this->table)
-                    ->result();
+        if ($keyword) {
+            $this->db->group_start();
+            $this->db->like('nama_barang', $keyword);
+            $this->db->or_like('kode_barang', $keyword);
+            $this->db->or_like('lokasi', $keyword);
+            $this->db->group_end();
+        }
+
+        return $this->db->get('master_barang_modal', $limit, $start)->result();
     }
+    
 }

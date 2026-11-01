@@ -36,7 +36,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/demo.css') ?>" />
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/dashboard.css') ?>" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') ?>" />
 
@@ -50,8 +51,6 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="<?= base_url('assets/sneat/assets/js/config.js') ?>" ></script>
   </head>
-
-  
 
   <body>
     <div class="layout-wrapper layout-content-navbar">
@@ -216,128 +215,111 @@
         <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
 
+              <!-- ================= TOP ================= -->
               <div class="row">
 
-              <!-- WELCOME -->
-              <div class="col-lg-8 mb-4">
-                <div class="card">
-                  <div class="d-flex align-items-end row">
-                    <div class="col-sm-7">
-                      <div class="card-body">
-                        <h5 class="card-title text-primary">
-                        Selamat Datang <?= $nama_user ?> 👋
-                        </h5>
-                        <p class="mb-4">
-                        Dashboard ini menampilkan ringkasan pengelolaan barang modal
-                        meliputi data barang, kategori, lokasi, penerimaan dan permintaan barang.
-                        </p>
-                        <a href="<?= site_url('master_barang') ?>" class="btn btn-sm btn-outline-primary">
-                        Lihat Data Barang
-                        </a>
+                <!-- WELCOME -->
+                <div class="col-lg-6 mb-4">
+                  <div class="card">
+                    <div class="row align-items-center">
+                      
+                      <div class="col-sm-7">
+                        <div class="card-body">
+                          <h5 class="card-title text-primary fw-bold">
+                            Selamat Datang <?= $nama_user ?> 👋
+                          </h5>
 
+                          <p class="welcome-text">
+                            Dashboard ini menampilkan ringkasan pengelolaan barang modal
+                            meliputi data barang, kategori, lokasi, penerimaan dan permintaan.
+                          </p>
+
+                          <a href="<?= site_url('admin/master_barang') ?>" 
+                            class="btn btn-primary btn-sm">
+                            Lihat Data Barang
+                          </a>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-5 text-center">
+                        <img src="<?= base_url('assets/sneat/assets/img/illustrations/man-with-laptop-light.png') ?>" height="130">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- STATISTIK -->
+                <div class="col-lg-6">
+                  <div class="row">
+
+                    <div class="col-6 mb-4">
+                      <div class="card stat-card">
+                        <div class="card-body">
+                          <span>Total Barang</span>
+                          <h3><?= $total_barang ?></h3>
+                        </div>
                       </div>
                     </div>
 
-                    <div class="col-sm-5 text-center">
-                      <div class="card-body pb-0 px-0 px-md-4">
-                        <img
-                        src="<?= base_url('assets/sneat/assets/img/illustrations/man-with-laptop-light.png') ?>"
-                        height="140"
-                        />
+                    <div class="col-6 mb-4">
+                      <div class="card stat-card">
+                        <div class="card-body">
+                          <span>Kategori</span>
+                          <h3><?= $total_kategori ?></h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-6 mb-4">
+                      <div class="card stat-card">
+                        <div class="card-body">
+                          <span>Lokasi</span>
+                          <h3><?= $total_lokasi ?></h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-6 mb-4">
+                      <div class="card stat-card">
+                        <div class="card-body">
+                          <span>Penerimaan</span>
+                          <h3><?= $total_penerimaan ?></h3>
+                        </div>
                       </div>
                     </div>
 
                   </div>
                 </div>
-              </div>
-
-              <!-- TOTAL BARANG -->
-              <div class="col-lg-2 col-md-6 col-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="avatar mb-2">
-                      <span class="avatar-initial rounded bg-label-primary">
-                      <i class="bx bx-package"></i>
-                      </span>
-                    </div>
-                    <span class="fw-semibold d-block mb-1">Total Barang</span>
-                    <h3><?= $total_barang ?></h3>
-                  </div>
-                </div>
-              </div>
-
-              <!-- TOTAL KATEGORI -->
-              <div class="col-lg-2 col-md-6 col-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="avatar mb-2">
-                      <span class="avatar-initial rounded bg-label-success">
-                      <i class="bx bx-category"></i>
-                      </span>
-                    </div>
-                    <span class="fw-semibold d-block mb-1">Kategori</span>
-                    <h3><?= $total_kategori ?></h3>
-                   </div>
-                </div>
-              </div>
-
-              <!-- TOTAL LOKASI -->
-              <div class="col-lg-2 col-md-6 col-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="avatar mb-2">
-                      <span class="avatar-initial rounded bg-label-warning">
-                      <i class="bx bx-map"></i>
-                      </span>
-                    </div>
-                    <span class="fw-semibold d-block mb-1">Lokasi</span>
-                    <h3><?= $total_lokasi ?></h3>
-                  </div>
-                </div>
-              </div>
-
-              <!-- TOTAL PENERIMAAN -->
-              <div class="col-lg-2 col-md-6 col-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="avatar mb-2">
-                      <span class="avatar-initial rounded bg-label-info">
-                      <i class="bx bx-download"></i>
-                      </span>
-                    </div>
-                    <span class="fw-semibold d-block mb-1">Penerimaan</span>
-                    <h3><?= $total_penerimaan ?></h3>
-                  </div>
-                </div>
-              </div>
 
               </div>
 
-
-            <!-- GRAFIK -->
+              <!-- ================= BOTTOM ================= -->
               <div class="row">
+
+                <!-- GRAFIK -->
                 <div class="col-lg-8 mb-4">
                   <div class="card">
-                    <h5 class="card-header">
-                    Grafik Penerimaan dan Permintaan Barang
-                    </h5>
+                    <h5 class="card-header">Grafik Penerimaan dan Permintaan</h5>
                     <div class="card-body">
                       <canvas id="grafikBarang"></canvas>
                     </div>
                   </div>
                 </div>
 
-              <!-- AKTIVITAS TERBARU -->
+                <!-- AKTIVITAS -->
                 <div class="col-lg-4 mb-4">
                   <div class="card">
                     <h5 class="card-header">Aktivitas Terbaru</h5>
-                    <div class="card-body">
+                    <div class="card-body activity-box">
+
                       <ul class="p-0 m-0">
-                      <?php foreach($penerimaan_terbaru as $p): ?>
+
+                        <?php foreach($penerimaan_terbaru as $p): ?>
                         <li class="d-flex mb-3">
-                          <div class="avatar flex-shrink-0 me-3">
+                          <div class="avatar me-3">
                             <span class="avatar-initial rounded bg-label-success">
-                            <i class="bx bx-download"></i>
+                              <i class="bx bx-download"></i>
                             </span>
                           </div>
                           <div>
@@ -346,14 +328,13 @@
                             <small><?= $p->tanggal ?></small>
                           </div>
                         </li>
-
                         <?php endforeach; ?>
-                        <?php foreach($permintaan_terbaru as $p): ?>
 
+                        <?php foreach($permintaan_terbaru as $p): ?>
                         <li class="d-flex mb-3">
-                          <div class="avatar flex-shrink-0 me-3">
+                          <div class="avatar me-3">
                             <span class="avatar-initial rounded bg-label-danger">
-                            <i class="bx bx-upload"></i>
+                              <i class="bx bx-upload"></i>
                             </span>
                           </div>
                           <div>
@@ -362,14 +343,16 @@
                             <small><?= $p->tanggal ?></small>
                           </div>
                         </li>
+                        <?php endforeach; ?>
 
-                      <?php endforeach; ?>
                       </ul>
+
                     </div>
                   </div>
                 </div>
 
               </div>
+
             </div>
 
             </div>
@@ -401,9 +384,12 @@
     <!-- Dashboard JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script> const APP_URL = "<?= base_url() ?>"; </script>
-    <script src="<?= base_url('assets/sneat/assets/js/dashboard.js') ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script>
+    const penerimaanChart = <?= json_encode($penerimaan_chart) ?>;
+    const permintaanChart = <?= json_encode($permintaan_chart) ?>;
+    </script>
+    <script src="<?= base_url('assets/sneat/assets/js/dashboard.js') ?>"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 

@@ -27,7 +27,7 @@ class Master_lokasi extends CI_Controller {
 
         $this->db->insert('master_lokasi', $data);
 
-        redirect('master_lokasi');
+        redirect('bidang/master_lokasi');
     }
 
     public function export_excel()

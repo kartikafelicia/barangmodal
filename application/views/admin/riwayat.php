@@ -221,6 +221,14 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <span class="fw-bold">Data Barang Modal</span>
 
+                      <?php $limit = $_GET['limit'] ?? '10'; ?>
+                        <div class="btn-group mb-2">
+                          <a href="?limit=10" class="btn btn-sm <?= $limit=='10'?'btn-primary':'btn-outline-secondary' ?>">10</a>
+                          <a href="?limit=50" class="btn btn-sm <?= $limit=='50'?'btn-primary':'btn-outline-secondary' ?>">50</a>
+                          <a href="?limit=100" class="btn btn-sm <?= $limit=='100'?'btn-primary':'btn-outline-secondary' ?>">100</a>
+                          <a href="?limit=all" class="btn btn-sm <?= $limit=='all'?'btn-primary':'btn-outline-secondary' ?>">All</a>
+                        </div>
+                        
                       <form method="get" action="<?= site_url('admin/riwayat') ?>">
                           <input 
                               type="text"

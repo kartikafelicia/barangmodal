@@ -380,9 +380,9 @@
                                             </button>
                                             <button 
                                                 type="button"
-                                                class="btn btn-sm btn-danger rounded-pill px-3 btn-hapus-semua"
+                                                class="btn btn-sm btn-danger rounded-pill px-3 btn-hapus"
                                                 data-kode="<?= $row->kode_unik ?>">
-                                                <i class="fa fa-trash me-1"></i> Hapus
+                                                Hapus
                                             </button>
                                         </div>
                                     </td>
@@ -405,58 +405,109 @@
                 </div>
 
                 <!-- Modal Detail -->
-            <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                <div class="modal-content">
+                <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
 
-                <!-- HEADER -->
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                    Detail Barang
-                    </h5>
-                    <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
-                    </button>
-                </div>
+                        <!-- HEADER -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                            Detail Barang
+                            </h5>
+                            <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                            </button>
+                        </div>
 
-                <!-- BODY -->
-                <div class="modal-body">
-                    <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light text-center">
-                        <tr>
-                            <th width="120">Kode Barang</th>
-                            <th width="120">No Register</th>
-                            <th>Nama Barang</th>
-                            <th width="80">Jumlah</th>
-                            <th width="150">Kondisi</th>
-                            <th width="120">Aksi</th>
-                        </tr>
-                        </thead>
-                        <tbody id="detailBody">
-                        <!-- Data AJAX masuk sini -->
-                        </tbody>
-                    </table>
+                        <!-- BODY -->
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light text-center">
+                                <tr>
+                                    <th width="120">Kode Barang</th>
+                                    <th width="120">No Register</th>
+                                    <th>Nama Barang</th>
+                                    <th width="80">Jumlah</th>
+                                    <th width="150">Kondisi</th>
+                                    <th width="120">Aksi</th>
+                                </tr>
+                                </thead>
+                                <tbody id="detailBody">
+                                <!-- Data AJAX masuk sini -->
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div class="modal-footer">
+                            <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+                            Tutup
+                            </button>
+                        </div>
+
+                        </div>
                     </div>
                 </div>
 
-                <!-- FOOTER -->
-                <div class="modal-footer">
-                    <button
-                    type="button"
-                    class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">
-                    Tutup
-                    </button>
+                <!-- Modal Hapus Semua-->
+                <div class="modal fade" id="modalDeletePermintaan" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger">Konfirmasi Hapus</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Yakin ingin menghapus data ini?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        Batal
+                        </button>
+                        <button class="btn btn-danger" id="confirmDeletePermintaan">
+                        Hapus
+                        </button>
+                    </div>
+
+                    </div>
+                </div>
                 </div>
 
-                </div>
-            </div>
-            </div>
+                <!-- Modal Hapus Detail -->
+                <div class="modal fade" id="modalDeleteDetail" tabindex="-1">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
 
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger">Konfirmasi Hapus</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            Yakin ingin menghapus barang ini?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger" id="confirmDeleteDetail">
+                            Hapus
+                            </button>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- END CONTENT WRAPPER -->

@@ -6,20 +6,33 @@ class Master_posisi_barang extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('Master_posisi_barang_model');
         $this->load->helper('url');
     }
 
     public function index()
 { 
     $this->load->database();
-    // $data['ruangan'] = $this->db->get('ruangan')->result();
+    $data['lokasi_master'] = $this->Master_posisi_barang_model->get_lokasi();
     $this->load->library('pagination');
 
     // CONFIG
-    $config['base_url'] = site_url('master_posisi_barang/index');
-    $config['total_rows'] = $this->db->count_all('master_posisi_barang');
-    $config['per_page'] = 10;
-    $config['uri_segment'] = 3;
+    $search = $this->input->get('search');
+    $config['base_url'] = site_url('admin/master_posisi_barang/index');
+    $config['total_rows'] = $this->Master_posisi_barang_model->count_all($search);
+    $limit = $this->input->get('limit');
+    if ($limit == 'all') {
+        $limit = null; // nanti ambil semua
+    } else {
+        $limit = (int) $limit;
+        if ($limit <= 0) $limit = 10;
+    }
+    if ($limit === null) {
+        $config['per_page'] = $config['total_rows'];
+    } else {
+        $config['per_page'] = $limit;
+    }
+    $config['uri_segment'] = 4;
 
     // STYLE (sama kayak master_barang)
     $config['use_page_numbers'] = FALSE;
@@ -50,16 +63,16 @@ class Master_posisi_barang extends CI_Controller {
     $this->pagination->initialize($config);
 
     // PAGE
-    $page = $this->uri->segment(3);
-    if (!ctype_digit((string) $page)) {
+    $page = $this->uri->segment(4);
+    if (!$page) {
         $page = 0;
     }
-
     // DATA
-     $data['lokasi'] = $this->db
-        ->limit($config['per_page'], $page)
-        ->get('master_posisi_barang')
-        ->result();
+    $data['lokasi'] = $this->Master_posisi_barang_model->get_paginated(
+        $config['per_page'],
+        $page,
+        $search
+    );
 
     $data['links'] = $this->pagination->create_links();
 
@@ -67,22 +80,16 @@ class Master_posisi_barang extends CI_Controller {
 }
 
     public function tambah()
-    {
-        $nomor_ruangan = $this->input->post('nomor_ruangan', true);
+{
+    $data = [
+        'lokasi' => $this->input->post('lokasi', true),
+        'nomor_ruangan' => $this->input->post('nomor_ruangan', true),
+        'ruangan' => $this->input->post('ruangan', true),
+    ];
 
-        $ruangan_data = $this->db
-            ->where('nomor_ruangan', $nomor_ruangan)
-            ->get('ruangan')
-            ->row();
-
-        $data = [
-            'lokasi' => $this->input->post('lokasi', true),
-            'nomor_ruangan' => $nomor_ruangan,
-            'ruangan' => $ruangan_data ? $ruangan_data->ruangan : null,
-        ];
-
-        $this->db->insert('master_posisi_barang', $data);
-    }
+    $this->Master_posisi_barang_model->insert($data);
+    redirect('admin/master_posisi_barang');
+}
 
     public function export_excel()
 {
@@ -122,14 +129,13 @@ public function export_pdf()
 }
 
     public function get_posisi($id)
-    {
-        $data = $this->db
-            ->where('id', $id)
-            ->get('master_posisi_barang')
-            ->row();
+{
+    $data = $this->Master_posisi_barang_model->get_by_id($id);
 
-        echo json_encode($data);
-    }
+    header('Content-Type: application/json'); // 🔥 WAJIB
+    echo json_encode($data);
+    exit; // 🔥 TAMBAH INI
+}
 
     public function update()
 {
@@ -142,16 +148,14 @@ public function export_pdf()
         'ruangan' => $this->input->post('ruangan', true), // 🔥 ambil dari form aja
     ];
 
-    $this->db->where('id', $id);
-    $this->db->update('master_posisi_barang', $data);
+    $this->Master_posisi_barang_model->update($id, $data);
 
     echo json_encode(['status' => 'success']);
 }
 
     public function delete($id)
     {
-        $this->db->where('id', $id);
-        $this->db->delete('master_posisi_barang');
+        $this->Master_posisi_barang_model->delete($id);
 
         echo json_encode(['status' => 'deleted']);
     }

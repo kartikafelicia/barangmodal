@@ -181,20 +181,6 @@ $(document).on('change', '.kondisi-select', function() {
 /* =====================================
    HAPUS DETAIL
 ===================================== */
-$(document).on('click', '.btn-hapus-detail', function() {
-
-  let id = $(this).data('id');
-
-  if(confirm("Yakin ingin menghapus data ini?")) {
-
-    $.post(APP_URL + "admin/penerimaan/hapus_detail", { id: id }, function() {
-      location.reload();
-    });
-
-  }
-
-});
-//modal hapus detail
 $(document).on('click', '.btn-hapus-detail', function(){
   deleteDetailId = $(this).data('id');
   $('#modalDeleteDetail').modal('show');
@@ -216,20 +202,6 @@ $('#confirmDeleteDetail').on('click', function(){
 /* =====================================
    HAPUS SEMUA (TABEL LUAR)
 ===================================== */
-$(document).on('click', '.btn-hapus-semua', function() {
-
-  let kode = $(this).data('kode');
-
-  if(confirm("Yakin mau hapus semua data ini?")) {
-
-    $.post(APP_URL + "admin/penerimaan/hapus_semua", { kode_unik: kode }, function() {
-      location.reload();
-    });
-
-  }
-
-});
-//modal hapus semua
 $(document).on('click', '.btn-hapus-semua', function(){
   deleteKodeUnik = $(this).data('kode');
   $('#modalDeleteSemua').modal('show');

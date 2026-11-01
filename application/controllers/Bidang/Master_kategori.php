@@ -26,7 +26,7 @@ class Master_kategori extends CI_Controller {
 
         $this->db->insert('master_kategori', $data);
 
-        redirect('master_kategori');
+        redirect('bidang/master_kategori');
     }
 
     public function export_excel()

@@ -1,4 +1,16 @@
 /* =====================================
+   RELOAD PAGINATION
+===================================== */
+// document.getElementById("limitSelect").addEventListener("change", function() {
+//     let val = this.value;
+//     let url = new URL(window.location.href);
+
+//     url.searchParams.set("limit", val);
+//     window.location.href = url.toString();
+// });
+
+
+/* =====================================
    PILIH LOKASI
 ===================================== */
 $(function () {
@@ -20,25 +32,6 @@ $(function () {
 
 });
 
-/* =====================================
-   SEARCH
-===================================== */
-$(document).ready(function () {
-
-  const input = $("#searchInput");
-
-  if (!input.length) return;
-
-  input.on("keyup", function () {
-    let value = $(this).val().toLowerCase();
-
-    $("#tableBarang tr").each(function () {
-      let text = $(this).text().toLowerCase();
-      $(this).toggle(text.includes(value));
-    });
-  });
-
-});
 
 /* =====================================
    EDIT DALAM MODAL
@@ -74,18 +67,26 @@ $(document).on('click', '.btn-edit', function() {
 /* =====================================
    UPDATE
 ===================================== */
-$(document).ready(function () {
+$('#formEdit').on('submit', function(e) {
+  e.preventDefault();
 
-  $('#formEdit').on('submit', function(e) {
-    e.preventDefault();
-
-    $.post(APP_URL + 'admin/master_barang/update',
-           $(this).serialize(),
-           function() {
-              location.reload();
-           });
+  $.ajax({
+    url: APP_URL + 'admin/master_barang/update',
+    type: 'POST',
+    data: $(this).serialize(),
+    dataType: 'json',
+    success: function(res) {
+      if(res.status === 'success'){
+        location.reload();
+      } else {
+        alert('Update gagal');
+      }
+    },
+    error: function(xhr){
+      console.log(xhr.responseText);
+      alert('Server error');
+    }
   });
-
 });
 
 /* =====================================
@@ -99,10 +100,22 @@ $(document).on('click', '.btn-hapus', function() {
 });
 
 $('#confirmDelete').on('click', function() {
-
   if(deleteId) {
-    $.get(APP_URL + 'admin/master_barang/delete/' + deleteId, function() {
-      location.reload();
+    $.ajax({
+      url: APP_URL + 'admin/master_barang/delete/' + deleteId,
+      type: 'GET',
+      dataType: 'json',
+      success: function(res){
+        if(res.status === 'deleted'){
+          location.reload();
+        } else {
+          alert('Gagal hapus');
+        }
+      },
+      error: function(xhr){
+        console.log(xhr.responseText);
+        alert('Server error');
+      }
     });
   }
 

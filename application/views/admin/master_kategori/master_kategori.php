@@ -232,11 +232,11 @@
                             style="width: 220px;">
 
                       <!-- Export -->
-                      <a href="<?= site_url('master_kategori/export_excel') ?>" 
+                      <a href="<?= site_url('admin/master_kategori/export_excel') ?>" 
                         class="btn btn-success btn-sm" target="_blank" >
                         Export Excel
                       </a>
-                      <a href="<?= site_url('master_kategori/export_pdf') ?>" 
+                      <a href="<?= site_url('admin/master_kategori/export_pdf') ?>" 
                         class="btn btn-primary btn-sm" target="_blank">
                         Export PDF
                       </a>
@@ -301,7 +301,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                    <form action="<?= site_url('master_kategori/tambah') ?>" method="post">
+                    <form action="<?= base_url('admin/master_kategori/tambah') ?>" method="post">
 
                         <div class="modal-header">
                         <h5 class="modal-title">Tambah Kategori</h5>

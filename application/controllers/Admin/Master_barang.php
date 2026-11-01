@@ -13,11 +13,20 @@ class Master_barang extends CI_Controller {
     public function index()
 {
     $this->load->library('pagination');
-
+    
     $config['base_url']   = site_url('admin/master_barang/index'); 
-    $config['total_rows'] = $this->Master_barang_model->count_all();
-    $config['per_page']   = 10;
-    $config['uri_segment'] = 3;
+    $keyword = $this->input->get('search');
+    $config['total_rows'] = $this->Master_barang_model->count_all($keyword);
+    $limit = $this->input->get('limit');
+
+    if ($limit == 'all') {
+        $config['per_page'] = $config['total_rows'];
+    } elseif ($limit) {
+        $config['per_page'] = (int)$limit;
+    } else {
+        $config['per_page'] = 10;
+    }
+    $config['uri_segment'] = 4;
 
     // 🔥 STYLE
     $config['use_page_numbers'] = FALSE;
@@ -49,11 +58,12 @@ class Master_barang extends CI_Controller {
     $this->pagination->initialize($config);
 
     // ✅ ambil offset (clean, tanpa ctype_digit ribet)
-    $page = (int) $this->uri->segment(3);
-
+    $page = (int) $this->uri->segment(4);
+    $page = ($page) ? $page : 0;
     $data['barang'] = $this->Master_barang_model->get_paginated(
         $config['per_page'],
-        $page
+        $page,
+        $keyword
     );
 
     // 🔥 penting buat nomor urut
@@ -78,7 +88,8 @@ class Master_barang extends CI_Controller {
         $lokasi = $this->input->post('lokasi', true);
 
         $data = [
-            'lokasi'             => $lokasi_data ? $lokasi_data->lokasi : null,            'unit'               => $this->input->post('unit', true),
+            'lokasi'             => $this->input->post('lokasi', true),
+            'unit'               => $this->input->post('unit', true),
             'kode_barang'        => $this->input->post('kode_barang', true),
             'kode_neraca'        => $this->input->post('kode_neraca', true),
             'no_register'        => $this->input->post('no_register', true),
@@ -113,13 +124,14 @@ class Master_barang extends CI_Controller {
 
         $this->Master_barang_model->insert_barang($data);
 
-        redirect('master_barang');
+        redirect('admin/master_barang/index');
     }
 
    public function export_excel()
 {
     header("Content-Type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=data_barang.xls");
+    $this->db->limit(100);
 
     $data['barang'] = $this->db->get('master_barang_modal')->result();
 
@@ -133,7 +145,7 @@ public function export_pdf()
 
     $this->load->library('pdf');
 
-    $this->db->limit(2000);
+    $this->db->limit(100);
 
     $data['barang'] = $this->db
         ->get('master_barang_modal')
@@ -141,7 +153,7 @@ public function export_pdf()
 
     $html = $this->load->view('admin/master_barang/export_pdf', $data, true);
 
-   $pdf = new Pdf('P','mm','A3'); // Portrait
+    $pdf = new Pdf('P','mm','A3'); // Portrait
     $pdf->SetMargins(5,5,5);
     $pdf->SetFont('helvetica','',5);
 
@@ -161,6 +173,14 @@ public function export_pdf()
     echo json_encode($data);
 }
 
+public function get_posisi($id)
+{
+    $data = $this->Master_posisi_barang_model->get_by_id($id);
+
+    header('Content-Type: application/json'); // 🔥 TAMBAH INI
+    echo json_encode($data);
+}
+
 public function update()
 {
     $id = $this->input->post('id');
@@ -168,7 +188,7 @@ public function update()
     $lokasi = $this->input->post('lokasi', true);
 
     $data = [
-        'lokasi'             => $lokasi_data ? $lokasi_data->lokasi : null,
+        'lokasi'             => $this->input->post('lokasi', true),
         'unit'               => $this->input->post('unit', true),
         'kode_barang'        => $this->input->post('kode_barang', true),
         'kode_neraca'        => $this->input->post('kode_neraca', true),
@@ -194,6 +214,7 @@ public function update()
         'sisa_umur'          => $this->input->post('sisa_umur', true),
         'beban_rp'           => $this->input->post('beban_rp', true),
         'akumulasi_susut_rp' => $this->input->post('akumulasi_susut_rp', true),
+        'lokasi_barang'      => $this->input->post('lokasi_barang', true),
         'keterangan'         => $this->input->post('keterangan', true),
         'sub_kategori'       => $this->input->post('sub_kategori', true),
     ];

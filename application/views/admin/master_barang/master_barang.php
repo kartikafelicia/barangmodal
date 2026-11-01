@@ -36,7 +36,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/demo.css') ?>" />
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <!-- masterbarang CSS -->
+    <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/masterbarang.css') ?>" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') ?>" />
 
@@ -226,12 +227,22 @@
                     <!-- Search + Button -->
                     <div class="d-flex align-items-center gap-2">
 
+                    <?php $limit = $_GET['limit'] ?? '10'; ?>
+                    <div class="btn-group">
+                      <a href="?limit=10" class="btn btn-sm <?= $limit=='10'?'btn-primary':'btn-outline-secondary' ?>">10</a>
+                      <a href="?limit=50" class="btn btn-sm <?= $limit=='50'?'btn-primary':'btn-outline-secondary' ?>">50</a>
+                      <a href="?limit=100" class="btn btn-sm <?= $limit=='100'?'btn-primary':'btn-outline-secondary' ?>">100</a>
+                      <a href="?limit=all" class="btn btn-sm <?= $limit=='all'?'btn-primary':'btn-outline-secondary' ?>">All</a>
+                    </div>
                       <!-- Search -->
-                      <input type="text"
-                            id="searchInput"
-                            class="form-control form-control-sm"
-                            placeholder="Cari barang..."
-                            style="width: 220px;">
+                      <form method="get">
+                        <input type="text"
+                              name="search"
+                              value="<?= $_GET['search'] ?? '' ?>"
+                              class="form-control form-control-sm"
+                              placeholder="Cari barang..."
+                              style="width:220px;">
+                      </form>
                         
                        <!-- Export -->
                       <a href="<?= site_url('admin/master_barang/export_excel') ?>" 
@@ -328,28 +339,12 @@
                             <td><?= $row->kategori ?></td>
                             <td><?= $row->sub_kategori ?></td>
                             <td class="text-center">
-                              <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary"
-                                        data-bs-toggle="dropdown">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li>
-                                    <a class="dropdown-item text-warning btn-edit"
-                                      href="javascript:void(0)"
-                                      data-id="<?= $row->id ?>">
-                                      <i class="bx bx-edit-alt me-1"></i> Edit
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a class="dropdown-item text-danger btn-hapus"
-                                      href="javascript:void(0)"
-                                      data-id="<?= $row->id ?>">
-                                      <i class="bx bx-trash me-1"></i> Hapus
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
+                              <button class="btn btn-sm btn-warning btn-edit" data-id="<?= $row->id ?>">
+                                Edit
+                              </button>
+                              <button class="btn btn-sm btn-danger btn-hapus" data-id="<?= $row->id ?>">
+                                Hapus
+                              </button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -373,7 +368,7 @@
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
 
-                <form action="<?= site_url('master_barang/tambah') ?>" method="post">
+                <form action="<?= base_url('admin/master_barang/tambah') ?>" method="post">
 
                     <div class="modal-header">
                     <h5 class="modal-title">Tambah Master Barang</h5>
@@ -382,10 +377,10 @@
 
                     <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6">
+                      <div class="col-md-4">
                           <label class="form-label">Lokasi</label>
                           <select name="lokasi" class="form-select" required>
-                            <option value="">-- Pilih Lokasi --</option>
+                            <option value="">-- Pilih Lokasi </option>
                             <?php foreach($lokasi as $l): ?>
                               <option value="<?= $l->lokasi ?>">
                                 <?= $l->lokasi ?>
@@ -393,107 +388,119 @@
                             <?php endforeach; ?>
                           </select>
                         </div>
-                        <div class="col-md-6">
+                        
+                        <div class="col-md-4">
                           <label class="form-label">Unit</label>
                           <input type="text" name="unit" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Kode Barang</label>
                           <input type="text" name="kode_barang" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Kode Neraca</label>
                           <input type="text" name="kode_neraca" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">No Register</label>
                           <input type="text" name="no_register" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Nama Barang</label>
                           <input type="text" name="nama_barang" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Merk/Type</label>
                           <input type="text" name="merk_type" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Ukuran CC</label>
                           <input type="text" name="ukuran_cc" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Bahan</label>
                           <input type="text" name="bahan" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Tahun Pengadaan</label>
                           <input type="number" name="tahun_pengadaan" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Kondisi B</label>
                           <input type="text" name="kondisi_B" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Kondisi KB</label>
-                          <input type="text" name="kondisi_B" class="form-control">
+                          <input type="text" name="kondisi_KB" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Kondisi RB</label>
-                          <input type="text" name="kondisi_B" class="form-control">
+                          <input type="text" name="kondisi_RB" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Rangka Seri</label>
                           <input type="text" name="rangka_seri" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Nomor Mesin</label>
                           <input type="text" name="nomor_mesin" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Nomor Nopol</label>
                           <input type="text" name="nomor_nopol" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Nomor BPKB</label>
                           <input type="text" name="nomor_bpkb" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Asal Usul Pemda</label>
                           <input type="text" name="asal_usul_pemda" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Asal Usul Unit</label>
                           <input type="text" name="asal_usul_unit" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Jumlah</label>
                           <input type="number" name="jumlah" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Satuan</label>
                           <input type="number" name="satuan" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Harga</label>
                           <input type="number" name="harga" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Sisa Umur</label>
                           <input type="number" name="sisa_umur" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Beban (Rp) </label>
                           <input type="number" name="beban_rp" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Akumulasi Susut (Rp) </label>
                           <input type="number" name="akumulasi_susut_rp" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Keterangan</label>
                           <input type="text" name="keterangan" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                          <label class="form-label">Lokasi Barang</label>
+                          <select name="lokasi_barang" class="form-select" required>
+                            <option value="">-- Pilih Lokasi Barang --</option>
+                            <?php foreach($lokasi as $l): ?>
+                              <option value="<?= $l->lokasi ?>">
+                                <?= $l->lokasi ?>
+                              </option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
                           <label class="form-label">Kategori</label>
                           <select name="kategori" class="form-select">
                               <option value="">-- Pilih --</option>
@@ -504,7 +511,7 @@
                               <?php endforeach; ?>
                           </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <label class="form-label">Sub Kategori</label>
                           <select name="sub_kategori" class="form-select">
                               <option value="">-- Pilih --</option>
@@ -597,11 +604,11 @@
                         </div>
                         <div class="col-md-4">
                           <label class="form-label">Kondisi KB</label>
-                          <input type="text" name="kondisi_B" class="form-control">
+                          <input type="text" name="kondisi_KB" class="form-control">
                         </div>
                         <div class="col-md-4">
                           <label class="form-label">Kondisi RB</label>
-                          <input type="text" name="kondisi_B" class="form-control">
+                          <input type="text" name="kondisi_RB" class="form-control">
                         </div>
                         <div class="col-md-4">
                           <label class="form-label">Rangka Seri</label>
@@ -654,6 +661,17 @@
                         <div class="col-md-4">
                           <label class="form-label">Keterangan</label>
                           <input type="text" name="keterangan" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">Lokasi Barang</label>
+                          <select name="lokasi_barang" class="form-select" required>
+                            <option value="">-- Pilih Lokasi Barang --</option>
+                            <?php foreach($lokasi as $l): ?>
+                              <option value="<?= $l->lokasi ?>">
+                                <?= $l->lokasi ?>
+                              </option>
+                            <?php endforeach; ?>
+                          </select>
                         </div>
                         <div class="col-md-4">
                           <label class="form-label">Kategori</label>
@@ -744,7 +762,7 @@
     <script src="<?= base_url('assets/sneat/assets/js/main.js') ?> "></script>
     <!-- Master Data JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script> const APP_URL = "<?= base_url() ?>"; </script>
+    <script> const APP_URL = "<?= site_url() ?>"; </script>
     <script src="<?= base_url('assets/sneat/assets/js/master_barang.js') ?>"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->

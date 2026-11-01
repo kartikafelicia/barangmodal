@@ -128,8 +128,8 @@
 
             <!-- Master Data -->
             <!-- <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Master Data</span> -->
-            <!-- </li>
+              <span class="menu-header-text">Master Data</span>
+            </li>
              <li class="menu-item">
               <a href="<?= site_url('bidang/master_barang') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
@@ -252,7 +252,7 @@
                                         <div class="d-flex justify-content-center gap-1">
                                            <button 
                                             class="btn btn-sm btn-warning"
-                                            onclick="bukaForm('<?= $row->id ?? '' ?>')">
+                                            onclick="bukaForm('<?= $row->id ?? '' ?>', '<?= $row->lokasi ?? '' ?>')">
                                             Form
                                           </button>
                                           <button class="btn btn-sm btn-primary"
@@ -260,10 +260,10 @@
                                             Permintaan
                                           </button>
                                           <button 
-                                                class="btn btn-sm btn-info"
-                                                onclick="lihatDokumen('<?= $row->id ?? '' ?>')">
-                                                Dokumen
-                                            </button>
+                                              class="btn btn-sm btn-info"
+                                              onclick="lihatDokumenTerakhir('<?= $row->id ?? '' ?>', '<?= $row->lokasi ?? '' ?>')">
+                                              Dokumen
+                                          </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -306,15 +306,23 @@
                       <table class="table table-bordered table-hover align-middle">
                         <thead class="table-light text-center">
                           <tr>
+                            <th width="30"></th>
                             <th>No</th>
                             <th>Kode Barang</th>
                             <th>Nama Barang</th>
-                            <th width="100">Jumlah</th>
+                            <th>Jumlah</th>
+                            <th>Aksi</th>
                           </tr>
                         </thead>
+                        <!-- <tr>
+                          <td colspan="5" class="text-center bg-light fw-bold">
+                            Data Baru (Form)
+                          </td>
+                        </tr> -->
                         <tbody id="permintaanBody">
                           <!-- isi dari JS -->
                         </tbody>
+                        <tbody id="permintaanBaru"></tbody>
                       </table>
                     </div>
 
@@ -348,11 +356,12 @@
 
                   <!-- BODY -->
                   <div class="modal-body">
-
-                    <form action="<?= site_url('bidang/kir/simpan') ?>" method="post">
+                    <form id="formKIR">
 
                       <!-- hidden id (buat edit) -->
                       <input type="hidden" name="id" id="form_id">
+                      <input type="hidden" name="id_lokasi" id="form_id_lokasi">
+                      <input type="hidden" name="nama_lokasi" id="form_nama_lokasi">
 
                       <div class="barang-wrapper">
 
@@ -372,11 +381,12 @@
                                 <option value="">-- Pilih Barang --</option>
                                 <?php foreach ($barang as $b): ?>
                                   <option 
-  value="<?= $b->no_register ?>"
-  data-merk-type="<?= $b->merk_type ?? '' ?>"
-  data-tahun="<?= $b->tahun_pengadaan ?? '' ?>">
-  <?= $b->nama_barang ?> - <?= $b->no_register ?>
-</option>
+                                    value="<?= $b->kode_barang ?>"
+                                    data-nama="<?= $b->nama_barang ?>"
+                                    data-merk-type="<?= $b->merk_type ?? '' ?>"
+                                    data-tahun="<?= $b->tahun_pengadaan ?? '' ?>">
+                                    <?= $b->nama_barang ?> - <?= $b->kode_barang ?>
+                                  </option>
                                 <?php endforeach; ?>
                               </select>
                             </div>

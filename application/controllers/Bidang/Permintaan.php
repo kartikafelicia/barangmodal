@@ -187,6 +187,8 @@ public function cetak_nota($kode_unik)
     // 🔥 generate PDF
     $pdf = new Pdf('P','mm','A4');
     $pdf->SetMargins(10,10,10);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
     $pdf->AddPage();
     $pdf->SetFont('times','',11);
     $pdf->writeHTML($html,true,false,true,false,'');

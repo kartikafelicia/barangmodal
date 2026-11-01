@@ -1,19 +1,40 @@
+console.log("MODAL SHOW");
+
 /* =====================================
    SEARCH
 ===================================== */
 $(document).ready(function () {
 
-  $("#searchInput").on("keyup", function () {
-    let value = $(this).val().toLowerCase();
+  $("#searchInput").on("keypress", function (e) {
+  if (e.which === 13) { // 13 = ENTER
+    e.preventDefault();
 
-    $("table tbody tr").filter(function () {
-      $(this).toggle(
-        $(this).text().toLowerCase().indexOf(value) > -1
-      );
-    });
-  });
+    let value = $(this).val();
+
+    let url = new URL(window.location.href);
+    url.searchParams.set("search", value);
+
+    window.location.href = url.toString();
+  }
+});
 
 });
+
+/* =====================================
+   PAGINATION
+===================================== */
+// document.getElementById("limitSelect").addEventListener("change", function() {  
+//     let val = this.value;  
+//     let url = new URL(window.location.href);  
+    
+//     if (val === "all") {  
+//         url.searchParams.set("limit", "all");  
+//     } else {  
+//         url.searchParams.set("limit", val);  
+//     }  
+
+//     window.location.href = url.toString();  
+// });
 
 
 /* =====================================
@@ -22,22 +43,25 @@ $(document).ready(function () {
 $(document).on('click', '.btn-edit', function() {
 
   let id = $(this).data('id');
+  let lokasi = $(this).data('lokasi');
+  let ruangan = $(this).data('ruangan');
+  let nomor = $(this).data('nomor');
 
-  $.get(APP_URL + 'admin/master_posisi_barang/get_posisi/' + id, function(response) {
+  $('#edit_id').val(id);
+  $('#edit_lokasi').val(lokasi);
+  $('#edit_ruangan').val(ruangan);
+  $('#edit_nomor_ruangan').val(nomor);
 
-    let data = JSON.parse(response);
+  // Tutup semua modal yang mungkin masih aktif dulu
+  $('.modal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop').remove();
 
-    $('#edit_id').val(data.id);
-    $('#edit_lokasi').val(data.lokasi);
-    $('#edit_ruangan').val(data.ruangan);
-    $('#edit_nomor_ruangan').val(data.nomor_ruangan);
-
+  // Buka modal edit setelah delay kecil
+  setTimeout(function() {
     $('#modalEdit').modal('show');
-
-  });
-
+  }, 300);
 });
-
 
 /* =====================================
    UPDATE
@@ -62,15 +86,26 @@ let deleteId = null;
 
 $(document).on('click', '.btn-hapus', function() {
   deleteId = $(this).data('id');
-  $('#modalDelete').modal('show');
+  console.log("DELETE ID:", deleteId);
+  
+  // Pastikan bersih dulu
+  $('.modal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop').remove();
+  
+  setTimeout(function() {
+    $('#modalDelete').modal('show');
+  }, 300);
 });
 
-$('#confirmDelete').on('click', function() {
-
-  if(deleteId) {
-    $.get(APP_URL + 'admin/master_posisi_barang/delete/' + deleteId, function() {
+$(document).on('click', '#confirmDelete', function() {
+  if (deleteId) {
+    $.get(APP_URL + 'admin/master_posisi_barang/delete/' + deleteId, function(res) {
+      console.log(res);
+      $('#modalDelete').modal('hide');
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
       location.reload();
     });
   }
-
 });

@@ -36,7 +36,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/demo.css') ?>" />
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <!-- master posisi barang CSS -->
+    <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/css/masterposisibarang.css') ?>" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') ?>" />
 
@@ -226,6 +227,14 @@
                     <!-- Search + Button -->
                     <div class="d-flex align-items-center gap-2">
 
+                    <?php $limit = $_GET['limit'] ?? '10'; ?>
+                    <div class="btn-group">
+                      <a href="?limit=10" class="btn btn-sm <?= $limit=='10'?'btn-primary':'btn-outline-secondary' ?>">10</a>
+                      <a href="?limit=50" class="btn btn-sm <?= $limit=='50'?'btn-primary':'btn-outline-secondary' ?>">50</a>
+                      <a href="?limit=100" class="btn btn-sm <?= $limit=='100'?'btn-primary':'btn-outline-secondary' ?>">100</a>
+                      <a href="?limit=all" class="btn btn-sm <?= $limit=='all'?'btn-primary':'btn-outline-secondary' ?>">All</a>
+                    </div>
+
                       <!-- Search -->
                       <input type="text"
                             id="searchInput"
@@ -234,11 +243,11 @@
                             style="width: 220px;">
                         
                        <!-- Export -->
-                      <a href="<?= site_url('master_posisi_barang/export_excel') ?>" 
+                      <a href="<?= site_url('admin/master_posisi_barang/export_excel') ?>" 
                         class="btn btn-success btn-sm">
                         Export Excel
                       </a>
-                      <a href="<?= site_url('master_posisi_barang/export_pdf') ?>" 
+                      <a href="<?= site_url('admin/master_posisi_barang/export_pdf') ?>" 
                         class="btn btn-primary btn-sm" target="_blank">
                         Export PDF
                       </a>
@@ -276,7 +285,10 @@
                           <td><?= $row->ruangan ?></td>
                           <td><?= $row->nomor_ruangan ?></td>
                           <td class="text-center">
-                            <button class="btn btn-warning btn-sm btn-edit" data-id="<?= $row->id ?>">Edit</button>
+                            <button class="btn btn-warning btn-sm btn-edit"
+                              data-id="<?= $row->id ?>"data-lokasi="<?= $row->lokasi ?>" data-ruangan="<?= $row->ruangan ?>" data-nomor="<?= $row->nomor_ruangan ?>">
+                              Edit
+                            </button>
                             <button class="btn btn-danger btn-sm btn-hapus" data-id="<?= $row->id ?>">Hapus</button>
                           </td>
                         </tr>
@@ -300,7 +312,7 @@
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
                 <div class="modal-content">
 
-                <form action="<?= site_url('master_posisi_barang/tambah') ?>" method="post">
+                <form action="<?= base_url('admin/master_posisi_barang/tambah') ?>" method="post">
 
                     <div class="modal-header">
                     <h5 class="modal-title">Tambah Master Posisi Barang</h5>
@@ -310,28 +322,30 @@
                     <div class="modal-body">
                       <div class="mb-3">
                         <label class="form-label">Lokasi</label>
-                        <input type="text" name="lokasi" class="form-control" required>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Ruangan</label>
-                        <select name="nomor_ruangan" class="form-select" required>
-                          <option value="">-- Pilih Ruangan --</option>
-                          <?php foreach($ruangan as $r): ?>
-                            <option value="<?= $r->nomor_ruangan ?>">
-                              <?= $r->ruangan . '.' . $r->nomor_ruangan ?>
+                        <select name="lokasi" class="form-select select2" required>
+                          <option value="">-- Pilih Lokasi --</option>
+                          <?php foreach($lokasi_master as $l): ?>
+                            <option value="<?= $l->lokasi ?>">
+                              <?= $l->lokasi ?>
                             </option>
                           <?php endforeach; ?>
                         </select>
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Ruangan</label>
+                        <input type="text" name="ruangan" class="form-control" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Nomor Ruangan</label>
+                        <input type="text" name="nomor_ruangan" class="form-control" required>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Simpan</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                      </div>
                     </div>
-
-                    <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Simpan</button>
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Batal
-                    </button>
-                    </div>
-
                 </form>
 
                 </div>
@@ -363,7 +377,7 @@
                           <input type="text" name="ruangan" id="edit_ruangan" class="form-control">
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">Lokasi</label>
+                          <label class="form-label">Nomor Ruangan</label>
                           <input type="text" name="nomor_ruangan" id="edit_nomor_ruangan" class="form-control">
                         </div>
                       </div>

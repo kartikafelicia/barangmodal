@@ -570,7 +570,6 @@
                     </div>
                 </div>
 
-                
                 <!-- Modal Detail -->
                 <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -622,6 +621,44 @@
 
                     </div>
                 </div>
+                </div>
+
+                <!-- Modal Hapus Semua -->
+                <div class="modal fade" id="modalDeleteSemua" tabindex="-1">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger">Konfirmasi Hapus</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            Yakin ingin menghapus seluruh data ini?
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger" id="confirmDeleteSemua">Hapus</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Hapus Detail -->
+                <div class="modal fade" id="modalDeleteDetail" tabindex="-1">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger">Konfirmasi Hapus</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            Yakin ingin menghapus barang ini?
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-danger" id="confirmDeleteDetail">Hapus</button>
+                        </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

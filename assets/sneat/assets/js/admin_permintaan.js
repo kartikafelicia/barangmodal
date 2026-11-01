@@ -1,108 +1,5 @@
-/* =====================================
-   MOTA PERMINTAAN
-===================================== */
+
 let currentKodeUnik = null;
-
-// function loadNota(kode_unik) {
-//   currentKodeUnik = kode_unik;
-  
-//   document.getElementById("kode_unik").value = kode_unik;
-//   fetch(APP_URL + "admin/permintaan/get_nota/" + kode_unik)
-//     .then(response => response.json())
-//     .then(result => {
-
-//       let permintaan = result.permintaan;
-//       let data = result.detail;
-
-//       // ✅ CEK STATUS DI SINI (bukan di luar)
-//       let isLocked = permintaan?.status_nota == 1;
-
-//       // 🔥 isi HEADER
-//       document.getElementById("nama").value = permintaan?.nama ?? '';
-//       document.getElementById("tanggal_nota").value = permintaan?.tanggal ?? '';
-//       document.getElementById("nomor_nota").value = permintaan?.nomor_nota ?? '';
-//       document.getElementById("keperluan_global").value = permintaan?.keperluan ?? '';
-
-//       // 🔥 LOCK INPUT
-//       document.getElementById("nama").readOnly = isLocked;
-//       document.getElementById("tanggal_nota").readOnly = isLocked;
-//       document.getElementById("nomor_nota").readOnly = isLocked;
-//       document.getElementById("keperluan_global").readOnly = isLocked;
-
-//       let html = "";
-
-//       if (Array.isArray(data) && data.length > 0) {
-//         data.forEach(item => {
-
-//           let disabled = isLocked ? 'readonly' : '';
-
-//           html += `
-//             <tr>
-//               <input type="hidden" name="id[]" value="${item.id}">
-//               <td><input type="text" name="nama_barang[]" class="form-control" ${disabled} value="${item.nama_barang ?? ''}"></td>
-//               <td><input type="number" name="jumlah[]" class="form-control" ${disabled} value="${item.jumlah ?? 0}"></td>
-//               <td><input type="text" name="satuan[]" class="form-control" ${disabled} value="${item.satuan ?? 'Unit'}"></td>
-//               <td><input type="text" name="keperluan[]" class="form-control" ${disabled} value="${item.keperluan ?? ''}"></td>
-//               <td><input type="text" name="keterangan[]" class="form-control" ${disabled} value="${item.keterangan ?? ''}"></td>
-//             </tr>
-//           `;
-//         });
-//       } else {
-//         html = `<tr><td colspan="5" class="text-center">Data kosong</td></tr>`;
-//       }
-
-//       document.getElementById("notaBody").innerHTML = html;
-
-//       // 🔥 TOGGLE BUTTON
-//       if (isLocked) {
-//         document.getElementById("btnSimpan").style.display = "none";
-//         document.getElementById("btnDownload").style.display = "inline-block";
-//       } else {
-//         document.getElementById("btnSimpan").style.display = "inline-block";
-//         document.getElementById("btnDownload").style.display = "none";
-//       }
-
-//       new bootstrap.Modal(document.getElementById('notaModal')).show();
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       alert("Gagal load nota");
-//     });
-// }
-// function simpanNota() {
-//   console.log("KODE UNIK:", document.getElementById("kode_unik").value);
-//   let form = document.getElementById("formNota");
-//   let formData = new FormData(form);
-//   let kode = document.getElementById("kode_unik").value;
-//   formData.append("kode_unik", kode);
-
-//   fetch(APP_URL + "admin/permintaan/simpan_nota", {
-//     method: "POST",
-//     body: formData
-//   })
-//   .then(res => res.json())
-//   .then(res => {
-//   console.log("RESPONSE:", res);
-
-//   if (res.status == "success") {
-//     alert("Data berhasil disimpan!");
-//     loadNota(currentKodeUnik);
-//   } else {
-//     alert("Gagal: " + res.msg);
-//   }
-//   }) 
-// }
-// function downloadNota() {
-//   if (!currentKodeUnik) {
-//     alert("Kode unik tidak ditemukan!");
-//     return;
-//   }
-
-//   window.open(
-//     APP_URL + "admin/permintaan/cetak_nota/" + currentKodeUnik,
-//     "_blank"
-//   );
-// }
 
 /* =====================================
    SPB
@@ -233,12 +130,19 @@ function simpanSPB() {
         method: "POST",
         body: formData
     })
-    .then(res => res.json())
+    .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
     .then(res => {
+        if (!res.ok) {
+            alert("Error: " + (res.body.message || "Gagal menyimpan SPB"));
+            return;
+        }
         alert("SPB berhasil disimpan");
 
         // 🔥 reload modal kayak NOTA
         loadSPB(currentKodeUnik);
+    })
+    .catch(err => {
+        alert("Terjadi kesalahan: " + err.message);
     });
 }
 function downloadSPB() {
@@ -389,11 +293,18 @@ function simpanSPPB() {
         method: "POST",
         body: formData
     })
-    .then(res => res.json())
+    .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
     .then(res => {
+        if (!res.ok) {
+            alert("Error: " + (res.body.message || "Gagal menyimpan SPPB"));
+            return;
+        }
         alert("SPPB berhasil disimpan");
 
         loadSPPB(currentKodeUnik);
+    })
+    .catch(err => {
+        alert("Terjadi kesalahan: " + err.message);
     });
 }
 function downloadSPPB() {
@@ -499,10 +410,17 @@ function simpanBAST() {
         method: "POST",
         body: formData
     })
-    .then(res => res.json())
+    .then(res => res.json().then(data => ({ status: res.status, ok: res.ok, body: data })))
     .then(res => {
+        if (!res.ok) {
+            alert("Error: " + (res.body.message || "Gagal menyimpan BAST"));
+            return;
+        }
         alert("BAST berhasil disimpan");
         loadBAST(currentKodeUnik);
+    })
+    .catch(err => {
+        alert("Terjadi kesalahan: " + err.message);
     });
 }
 function downloadBAST() {
@@ -567,7 +485,7 @@ function showDetail(kode_unik) {
 ===================================== */
 $(document).on('change', '.kondisi-select', function() {
 
-  $.post(APP_URL + "permintaan/update_kondisi", {
+  $.post(APP_URL + "admin/permintaan/update_kondisi", {
     id: $(this).data('id'),
     kondisi: $(this).val()
   });
@@ -577,16 +495,19 @@ $(document).on('change', '.kondisi-select', function() {
 /* =====================================
    HAPUS DETAIL (PERMINTAAN)
 ===================================== */
-$(document).on('click', '.btn-hapus-detail', function() {
+$(document).on('click', '.btn-hapus-detail', function(){
+  deleteDetailId = $(this).data('id');
+  $('#modalDeleteDetail').modal('show');
+});
 
-  let id = $(this).data('id');
+$('#confirmDeleteDetail').on('click', function(){
 
-  if(confirm("Yakin ingin menghapus data ini?")) {
-
-    $.post(APP_URL + "admin/permintaan/hapus_detail", { id: id }, function() {
+  if(deleteDetailId){
+    $.post(APP_URL + 'admin/permintaan/hapus_detail', {
+      id: deleteDetailId
+    }, function(){
       location.reload();
     });
-
   }
 
 });
@@ -595,18 +516,19 @@ $(document).on('click', '.btn-hapus-detail', function() {
 /* =====================================
    HAPUS SEMUA (TABEL LUAR)
 ===================================== */
-$(document).on('click', '.btn-hapus-semua', function() {
+$(document).on('click', '.btn-hapus-semua', function(){
+  deleteKodeUnik = $(this).data('kode');
+  $('#modalDeleteSemua').modal('show');
+});
 
-  let kode = $(this).data('kode');
+$('#confirmDeleteSemua').on('click', function(){
 
-  if(confirm("Yakin mau hapus semua data ini?")) {
-
-    $.post(APP_URL + "admin/permintaan/hapus_semua", { kode_unik: kode }, function() {
+  if(deleteKodeUnik){
+    $.post(APP_URL + 'admin/permintaan/hapus_semua', {
+      kode_unik: deleteKodeUnik
+    }, function(){
       location.reload();
     });
-
   }
-
-  
 
 });

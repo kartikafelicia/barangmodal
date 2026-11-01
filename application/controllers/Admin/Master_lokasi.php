@@ -27,7 +27,7 @@ class Master_lokasi extends CI_Controller {
 
         $this->db->insert('master_lokasi', $data);
 
-        redirect('master_lokasi');
+        redirect('admin/master_lokasi');
     }
 
     public function export_excel()
@@ -60,6 +60,8 @@ class Master_lokasi extends CI_Controller {
     $pdf = new Pdf('P','mm','A4');
     $pdf->SetMargins(10,10,10);
     $pdf->SetFont('helvetica','',10);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
 
     $pdf->AddPage();
     $pdf->writeHTML($html);

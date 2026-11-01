@@ -39,6 +39,37 @@ class Dashboard extends CI_Controller {
             ->limit(5)
             ->get()
             ->result();
+        
+            // 🔥 DATA GRAFIK BULANAN
+$penerimaan = $this->db
+    ->select("MONTH(tanggal) as bulan, COUNT(*) as total")
+    ->from("penerimaan_barang")
+    ->group_by("MONTH(tanggal)")
+    ->get()
+    ->result();
+
+$permintaan = $this->db
+    ->select("MONTH(tanggal) as bulan, COUNT(*) as total")
+    ->from("permintaan_barang")
+    ->group_by("MONTH(tanggal)")
+    ->get()
+    ->result();
+
+// isi 12 bulan default 0
+$dataPenerimaan = array_fill(1, 12, 0);
+$dataPermintaan = array_fill(1, 12, 0);
+
+foreach ($penerimaan as $p) {
+    $dataPenerimaan[$p->bulan] = (int)$p->total;
+}
+
+foreach ($permintaan as $p) {
+    $dataPermintaan[$p->bulan] = (int)$p->total;
+}
+
+// kirim ke view
+$data['penerimaan_chart'] = array_values($dataPenerimaan);
+$data['permintaan_chart'] = array_values($dataPermintaan);
 
         $this->load->view('admin/dashboard', $data);
     }

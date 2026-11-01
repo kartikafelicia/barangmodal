@@ -121,7 +121,7 @@
         <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="<?= site_url('admin/dashboard') ?>" class="menu-link">
+              <a href="<?= base_url('admin/dashboard') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="dashboard">Dashboard</div>
               </a>
@@ -235,7 +235,7 @@
                             <h5 class="modal-title">Tambah Barang Pengadaan</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        <form action="<?= site_url('admin/penerimaan/simpan_pengadaan') ?>" method="post" enctype="multipart/form-data">
+                        <form action="<?= base_url('admin/penerimaan/simpan_pengadaan') ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="mb-4">
                                 <div class="row g-3">
@@ -360,7 +360,7 @@
                             <h5 class="modal-title">Tambah Barang Hibah</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        <form action="<?= site_url('admin/penerimaan/simpan_hibah') ?>" method="post" enctype="multipart/form-data">
+                        <form action="<?= base_url('admin/penerimaan/simpan_hibah') ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="mb-4">
                                 <div class="row g-3">
@@ -479,7 +479,7 @@
                             <h5 class="modal-title">Tambah Barang Instansi Lain</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
-                        <form action="<?= site_url('admin/penerimaan/simpan_instansi') ?>" method="post" enctype="multipart/form-data">
+                        <form action="<?= base_url('admin/penerimaan/simpan_instansi') ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 <div class="mb-4">
                                 <div class="row g-3">

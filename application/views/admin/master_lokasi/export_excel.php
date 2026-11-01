@@ -2,7 +2,6 @@
 <thead>
 <tr>
 <th>No</th>
-<th>Nomor Lokasi</th>
 <th>Lokasi</th>
 </tr>
 </thead>
@@ -13,7 +12,6 @@
 
 <tr>
 <td><?= $no++ ?></td>
-<td><?= $b->nomor_lokasi ?></td>
 <td><?= $b->lokasi ?></td>
 </tr>
 

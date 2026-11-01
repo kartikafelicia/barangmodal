@@ -1,0 +1,20 @@
+/* MODAL UTAMA */
+.modal {
+  z-index: 1060 !important;
+}
+
+/* BACKDROP */
+.modal-backdrop {
+  z-index: 1050 !important;
+}
+
+/* SCROLL MODAL */
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* SELECT2 DALAM MODAL */
+.select2-container {
+  z-index: 1065 !important;
+}

@@ -1,3 +1,4 @@
+console.log("APP_URL:", APP_URL);
 let deleteIdKategori = null;
 
 /* =====================================
@@ -35,12 +36,13 @@ $(document).on('click', '.btn-edit', function() {
 /* =====================================
    UPDATE
 ===================================== */
-$('#formEditKategori').on('submit', function(e){
+$(document).on('submit', '#formEditKategori', function(e){
   e.preventDefault();
 
-  $.post(APP_URL + 'master_kategori/update',
+  $.post(APP_URL + 'admin/master_kategori/update',
     $(this).serialize(),
-    function(){
+    function(res){
+      console.log("RES:", res); // 🔥 debug
       location.reload();
     }
   );
@@ -58,7 +60,7 @@ $(document).on('click', '.btn-hapus', function(){
 $('#confirmDeleteKategori').on('click', function(){
 
   if(deleteIdKategori){
-    $.get(APP_URL + 'master_kategori/delete/' + deleteIdKategori,
+    $.get(APP_URL + 'admin/master_kategori/delete/' + deleteIdKategori,
       function(){
         location.reload();
       }

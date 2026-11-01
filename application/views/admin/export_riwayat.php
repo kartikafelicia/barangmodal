@@ -118,19 +118,37 @@ function bulanIndo($b){
     ];
     return $bulan[(int)$b] ?? '-';
 }
-?>
 
-<?php $no=1; foreach($riwayat as $r): ?>
-<?php if(!$r->bulan && !$r->tahun && !$r->lokasi_barang) continue; ?>
+$no = 1;
+
+$lastBulan = '-';
+$lastTahun = '-';
+$lastLokasi = '-';
+$lastRuangan = '-';
+
+foreach($riwayat as $r):
+
+    // skip kalau kosong semua
+    if(!$r->bulan && !$r->tahun && !$r->lokasi_barang && !$r->ruangan && !$r->kondisi){
+        continue;
+    }
+
+    // simpan data terakhir
+    if($r->bulan) $lastBulan = $r->bulan;
+    if($r->tahun) $lastTahun = $r->tahun;
+    if($r->lokasi_barang) $lastLokasi = $r->lokasi_barang;
+    if($r->ruangan) $lastRuangan = $r->ruangan;
+?>
 
 <tr>
     <td width="6%" class="center"><?= $no++ ?></td>
-    <td width="14%" class="center"><?= bulanIndo($r->bulan) ?></td>
-    <td width="10%" class="center"><?= $r->tahun ?></td>
-    <td width="30%"><?= $r->lokasi_barang ?></td>
-    <td width="30%"><?= $r->ruangan ?></td>
+    <td width="14%" class="center"><?= bulanIndo($lastBulan) ?></td>
+    <td width="10%" class="center"><?= $lastTahun ?></td>
+    <td width="30%"><?= $lastLokasi ?></td>
+    <td width="30%"><?= $lastRuangan ?></td>
     <td width="10%" class="center"><?= $r->kondisi ?? '-' ?></td>
 </tr>
+
 <?php endforeach; ?>
 
 </tbody>

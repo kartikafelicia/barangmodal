@@ -1,0 +1,17 @@
+/* Lebarin modal (override modal-lg bootstrap) */
+.modal-dialog {
+    max-width: 950px;
+    margin: 1.5rem auto; /* biar gak terlalu ke bawah */
+}
+
+/* Aktifin scroll dalam modal */
+.modal-dialog-scrollable .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Pagination */
+.btn-group .btn {
+    min-width: 50px;
+}
+

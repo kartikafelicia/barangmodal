@@ -141,8 +141,8 @@
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="masterkategori">Master Kategori</div>
               </a>
-            </li>
-            <li class="menu-item">
+            </li> -->
+            <!-- <li class="menu-item">
               <a href="<?= site_url('bidang/master_lokasi') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="masterlokasi">Master Lokasi</div>
@@ -152,12 +152,11 @@
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="masterposisibarang">Master Posisi Barang</div>
               </a>
-            </li>
             </li> -->
+            </li>
 
             <!-- Transaksi -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
-
             <li class="menu-item">
               <a href="<?= site_url('bidang/permintaan') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-box"></i>
@@ -214,12 +213,17 @@
 
                     <!-- TITLE + SEARCH -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="fw-bold">Data Barang Modal</span>
+                      <span class="fw-bold">Data Barang Modal</span>
 
-                    <input id="searchInput"
-                        class="form-control form-control-sm"
-                        placeholder="Cari barang..."
-                        style="width: 250px;">
+                      <form method="get" action="<?= site_url('bidang/riwayat') ?>">
+                          <input 
+                              type="text"
+                              name="search"
+                              value="<?= $keyword ?? '' ?>"
+                              class="form-control form-control-sm"
+                              placeholder="Cari barang..."
+                              style="width: 250px;">
+                      </form>
                     </div>
 
                     <!-- TABLE -->
@@ -299,6 +303,11 @@
                             </thead>
                             <tbody id="detailBody"></tbody>
                         </table>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-danger" onclick="exportRiwayat()">
+                            Export PDF
+                          </button>
                         </div>
 
                     </div>

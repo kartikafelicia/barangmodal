@@ -217,6 +217,35 @@
              <div class="card">
                 <div class="card-body">
                     <h6 class="fw-semibold text-muted mb-3">Data Lokasi & Sub Unit</h6>
+                    <?php $limit = $_GET['limit'] ?? '10'; ?>
+                    <div class="row mb-3 align-items-center">
+
+                        <!-- KIRI: LIMIT -->
+                        <div class="col-md-6">
+                            <div class="btn-group">
+                                <a href="?limit=10" class="btn btn-sm <?= $limit=='10'?'btn-primary':'btn-outline-secondary' ?>">10</a>
+                                <a href="?limit=50" class="btn btn-sm <?= $limit=='50'?'btn-primary':'btn-outline-secondary' ?>">50</a>
+                                <a href="?limit=100" class="btn btn-sm <?= $limit=='100'?'btn-primary':'btn-outline-secondary' ?>">100</a>
+                                <a href="?limit=all" class="btn btn-sm <?= $limit=='all'?'btn-primary':'btn-outline-secondary' ?>">All</a>
+                            </div>
+                        </div>
+
+                        <!-- KANAN: SEARCH -->
+                        <div class="col-md-6 text-end">
+                            <form method="get" class="d-inline-flex">
+                                <input 
+                                    type="text"
+                                    name="search"
+                                    value="<?= $keyword ?? '' ?>"
+                                    class="form-control form-control-sm me-2"
+                                    placeholder="Cari barang..."
+                                    style="width: 200px;">
+
+                                <button class="btn btn-sm btn-primary">Cari</button>
+                            </form>
+                        </div>
+
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle">
@@ -232,21 +261,14 @@
                             </thead>
 
                             <tbody>
-                            <?php if (!empty($lokasi)) : ?>
-                                <?php $no = 1; foreach ($lokasi as $row) : ?>
+                           <?php if (!empty($kir)) : ?>
+    <?php $no = $start + 1; foreach ($kir as $row) : ?>
                                 <tr>
                                     <td class="text-center"><?= $no++ ?></td>
 
-                                    <!-- Lokasi -->
                                     <td><?= $row->lokasi ?? '-' ?></td>
-
-                                    <!-- Ruangan -->
                                     <td><?= $row->ruangan ?? '-' ?></td>
-
-                                    <!-- Sub Unit (ambil dari tabel lokasi juga) -->
                                     <td><?= $row->lokasi ?? '-' ?></td>
-
-                                    <!-- Kondisi -->
                                     <td class="text-center">
                                         <span class="badge bg-success">
                                             <?= $row->kondisi ?? 'Baik' ?>
@@ -258,7 +280,7 @@
                                         <div class="d-flex justify-content-center gap-1">
                                            <button 
                                             class="btn btn-sm btn-warning"
-                                            onclick="bukaForm('<?= $row->id ?? '' ?>')">
+                                            onclick="bukaForm('<?= $row->id ?? '' ?>', '<?= $row->lokasi ?? '' ?>')">
                                             Form
                                           </button>
                                           <button class="btn btn-sm btn-primary"
@@ -266,10 +288,10 @@
                                             Permintaan
                                           </button>
                                           <button 
-                                                class="btn btn-sm btn-info"
-                                                onclick="lihatDokumen('<?= $row->id ?? '' ?>')">
-                                                Dokumen
-                                            </button>
+                                              class="btn btn-sm btn-info"
+                                              onclick="lihatDokumenTerakhir('<?= $row->id ?? '' ?>', '<?= $row->lokasi ?? '' ?>')">
+                                              Dokumen
+                                          </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -283,6 +305,9 @@
                             <?php endif; ?>
                             </tbody>
                         </table>
+                        <div class="mt-3 d-flex justify-content-center">
+                          <?= $links ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -312,11 +337,12 @@
                       <table class="table table-bordered table-hover align-middle">
                         <thead class="table-light text-center">
                           <tr>
-                            <th width="40"></th>
+                            <th width="30"></th>
                             <th>No</th>
                             <th>Kode Barang</th>
                             <th>Nama Barang</th>
-                            <th width="100">Jumlah</th>
+                            <th>Jumlah</th>
+                            <th>Aksi</th>
                           </tr>
                         </thead>
                         <!-- <tr>

@@ -7,6 +7,7 @@ class Permintaan extends CI_Controller {
     {
         parent::__construct();
         $this->load->database();
+        $this->load->model('Permintaan_model');
         $this->load->helper(['url', 'form']);
         $this->load->library('upload');
     }
@@ -21,10 +22,7 @@ class Permintaan extends CI_Controller {
         ->get('master_lokasi')
         ->result();
 
-    $data['permintaan'] = $this->db
-        ->order_by('id', 'DESC')
-        ->get('permintaan_barang')
-        ->result();
+    $data['permintaan'] = $this->Permintaan_model->get_all_permintaan();
 
     $this->load->view('admin/permintaan/permintaan', $data);
 }
@@ -161,27 +159,34 @@ public function get_spb($kode_unik)
 }
 public function simpan_spb()
 {
-    $kode_unik = $this->input->post('kode_unik');
+    try {
+        $kode_unik = $this->input->post('kode_unik');
 
-    // update header
-    $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
-    'nomor_spb' => $this->input->post('nomor_spb'),
-    'nama'      => $this->input->post('pemohon'),
-    'keperluan' => $this->input->post('keperluan'),
-    'status_spb'=> 1 // 🔥 penanda sudah dikunci
-]);
+        // update header
+        $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
+            'nomor_spb' => $this->input->post('nomor_spb'),
+            'nama'      => $this->input->post('pemohon'),
+            'keperluan' => $this->input->post('keperluan'),
+            'status_spb'=> 1 // 🔥 penanda sudah dikunci
+        ]);
 
-    // detail
-    $id = $this->input->post('id');
-    $jumlah_setuju = $this->input->post('jumlah_persetujuan');
+        // detail
+        $id = $this->input->post('id');
+        $jumlah_setuju = $this->input->post('jumlah_persetujuan');
 
-foreach ($id as $i => $val) {
-    $this->db->where('id', $val)->update('detail_permintaan', [
-        'jumlah_persetujuan' => $jumlah_setuju[$i]
-    ]);
-}
+        if (!empty($id) && is_array($id)) {
+            foreach ($id as $i => $val) {
+                $this->db->where('id', $val)->update('detail_permintaan', [
+                    'jumlah_persetujuan' => isset($jumlah_setuju[$i]) ? $jumlah_setuju[$i] : 0
+                ]);
+            }
+        }
 
-    echo json_encode(['status' => 'success']);
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }
 public function cetak_spb($kode_unik)
 {
@@ -250,7 +255,6 @@ $pdf->setPrintFooter(false);
 
     $pdf->Output('SPB.pdf','I');
 }
-
 /* =====================================
    SPPB
 ===================================== */
@@ -303,29 +307,36 @@ public function get_sppb($kode_unik)
 }
 public function simpan_sppb()
 {
-    $kode_unik = $this->input->post('kode_unik');
+    try {
+        $kode_unik = $this->input->post('kode_unik');
 
-    // ======================
-    // HEADER
-    // ======================
-    $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
-        'nomor_sppb' => $this->input->post('nomor_sppb'),
-        'nama'       => $this->input->post('nama'),
-        'status_sppb'=> 1 
-    ]);
-
-    $id      = $this->input->post('id');
-    $jumlah  = $this->input->post('jumlah_persetujuan');
-    $ket     = $this->input->post('keterangan');
-
-    foreach ($id as $i => $val) {
-        $this->db->where('id', $val)->update('detail_permintaan', [
-            'jumlah_persetujuan' => $jumlah[$i],
-            'keterangan'         => $ket[$i]
+        // ======================
+        // HEADER
+        // ======================
+        $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
+            'nomor_sppb' => $this->input->post('nomor_sppb'),
+            'nama'       => $this->input->post('nama'),
+            'status_sppb'=> 1 
         ]);
-    }
 
-    echo json_encode(['status' => 'success']);
+        $id      = $this->input->post('id');
+        $jumlah  = $this->input->post('jumlah_persetujuan');
+        $ket     = $this->input->post('keterangan');
+
+        if (!empty($id) && is_array($id)) {
+            foreach ($id as $i => $val) {
+                $this->db->where('id', $val)->update('detail_permintaan', [
+                    'jumlah_persetujuan' => isset($jumlah[$i]) ? $jumlah[$i] : 0,
+                    'keterangan'         => isset($ket[$i]) ? $ket[$i] : ''
+                ]);
+            }
+        }
+
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }
 public function cetak_sppb($kode_unik)
 {
@@ -347,7 +358,8 @@ public function cetak_sppb($kode_unik)
     // ======================
     // TAMBAHAN FIELD
     // ======================
-    $data['permintaan']->nomor_sppb = 'SPPB-' . date('Ymd');
+    $data['permintaan']->nomor_sppb =
+    $data['permintaan']->nomor_sppb ?? '-';
     $data['permintaan']->pihak = $data['permintaan']->nama ?? '-';
 
     // ======================
@@ -433,26 +445,34 @@ public function get_bast($kode_unik)
 }
 public function simpan_bast()
 {
-    $kode_unik = $this->input->post('kode_unik');
+    try {
+        $kode_unik = $this->input->post('kode_unik');
 
-    // HEADER
-    $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
-        'nomor_bast' => $this->input->post('nomor_bast'),
-        'nama'       => $this->input->post('nama'),
-        'status_bast'=> 1
-    ]);
-
-    // DETAIL
-    $id  = $this->input->post('id');
-    $ket = $this->input->post('keterangan');
-
-    foreach ($id as $i => $val) {
-        $this->db->where('id', $val)->update('detail_permintaan', [
-            'keterangan' => $ket[$i]
+        // HEADER
+        $this->db->where('kode_unik', $kode_unik)->update('permintaan_barang', [
+            'nomor_bast' => $this->input->post('nomor_bast'),
+            'nama'       => $this->input->post('nama'),
+            'status_bast'=> 1
         ]);
-    }
 
-    echo json_encode(['status' => 'success']);
+        // DETAIL///////////
+        
+        $id  = $this->input->post('id');
+        $ket = $this->input->post('keterangan');
+
+        if (!empty($id) && is_array($id)) {
+            foreach ($id as $i => $val) {
+                $this->db->where('id', $val)->update('detail_permintaan', [
+                    'keterangan' => isset($ket[$i]) ? $ket[$i] : ''
+                ]);
+            }
+        }
+
+        echo json_encode(['status' => 'success']);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
 }
 public function cetak_bast($kode_unik)
 {
@@ -474,7 +494,8 @@ public function cetak_bast($kode_unik)
     // ======================
     // TAMBAHAN FIELD
     // ======================
-    $data['permintaan']->nomor_bast = 'BAST-' . date('Ymd');
+    $data['permintaan']->nomor_bast =
+    $data['permintaan']->nomor_bast ?? '-';
     $data['permintaan']->pihak = $data['permintaan']->nama ?? '-';
 
     // ======================
@@ -504,7 +525,7 @@ public function cetak_bast($kode_unik)
     $pdf->SetMargins(10,10,10);
     $pdf->SetFont('times','',11);
     $pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
+    $pdf->setPrintFooter(false);
 
     $pdf->AddPage();
     $pdf->writeHTML($html,true,false,true,false,'');

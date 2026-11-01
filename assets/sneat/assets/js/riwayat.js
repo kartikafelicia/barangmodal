@@ -19,19 +19,38 @@ function loadDetailBarang(id) {
       let html = "";
       let no = 1;
 
+      let lastLokasi = "-";
+      let lastRuangan = "-";
+      let lastBulan = "-";
+      let lastTahun = "-";
+
       if (riwayat.length > 0) {
+
         riwayat.forEach(h => {
+
+          // skip kalau kosong semua
+          if (!h.bulan && !h.tahun && !h.lokasi_barang && !h.ruangan && !h.kondisi) {
+            return;
+          }
+
+          // simpan data terakhir
+          if (h.bulan) lastBulan = h.bulan;
+          if (h.tahun) lastTahun = h.tahun;
+          if (h.lokasi_barang) lastLokasi = h.lokasi_barang;
+          if (h.ruangan) lastRuangan = h.ruangan;
+
           html += `
             <tr>
               <td class="text-center">${no++}</td>
-              <td>${h.bulan ?? '-'}</td>
-              <td>${h.tahun ?? '-'}</td>
-              <td>${h.lokasi_barang ?? '-'}</td>
-              <td>${h.ruangan ?? '-'}</td>
-              <td>${h.kondisi ?? '-'}</td>
+              <td>${lastBulan}</td>
+              <td>${lastTahun}</td>
+              <td>${lastLokasi}</td>
+              <td>${lastRuangan}</td>
+              <td class="text-center">${h.kondisi ?? '-'}</td>
             </tr>
           `;
         });
+
       } else {
         html = `<tr><td colspan="6" class="text-center">Tidak ada data</td></tr>`;
       }

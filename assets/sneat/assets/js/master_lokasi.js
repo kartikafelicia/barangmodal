@@ -1,3 +1,4 @@
+console.log("APP_URL:", APP_URL);
 let deleteIdLokasi = null;
 
 /* =====================================
@@ -23,11 +24,9 @@ $(document).ready(function () {
 $(document).on('click', '.btn-edit', function() {
 
   let id = $(this).data('id');
-  let nomor = $(this).data('nomor');
   let lokasi = $(this).data('lokasi');
 
   $('#edit_id').val(id);
-  $('#edit_nomor').val(nomor);
   $('#edit_lokasi').val(lokasi);
 
   $('#modalEdit').modal('show');
@@ -36,12 +35,13 @@ $(document).on('click', '.btn-edit', function() {
 /* =====================================
    UPDATE
 ===================================== */
-$('#formEditLokasi').on('submit', function(e){
+$(document).on('submit', '#formEditLokasi', function(e){
   e.preventDefault();
 
-  $.post(APP_URL + 'master_lokasi/update',
+  $.post(APP_URL + 'admin/master_lokasi/update',
     $(this).serialize(),
-    function(){
+    function(res){
+      console.log("RES:", res); // debug
       location.reload();
     }
   );
@@ -59,7 +59,7 @@ $(document).on('click', '.btn-hapus', function(){
 $('#confirmDeleteLokasi').on('click', function(){
 
   if(deleteIdLokasi){
-    $.get(APP_URL + 'master_lokasi/delete/' + deleteIdLokasi,
+    $.get(APP_URL + 'admin/master_lokasi/delete/' + deleteIdLokasi,
       function(){
         location.reload();
       }

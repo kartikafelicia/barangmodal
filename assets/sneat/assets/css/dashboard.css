@@ -1,0 +1,48 @@
+/* ================= DASHBOARD CUSTOM ================= */
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* Statistik card */
+.stat-card h3 {
+  font-weight: bold;
+  margin: 0;
+}
+
+.stat-card span {
+  font-size: 13px;
+  color: #888;
+}
+
+/* Welcome */
+.welcome-text {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Grafik */
+#grafikBarang {
+  height: 300px !important;
+}
+
+/* Aktivitas */
+.activity-box {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+/* Scroll biar halus */
+.activity-box::-webkit-scrollbar {
+  width: 5px;
+}
+.activity-box::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}

@@ -9,21 +9,53 @@ table{
     border-collapse: collapse;
 }
 
+/* ❌ HAPUS SEMUA BORDER DEFAULT */
 th, td{
-    border:1px solid black;
+    border:none;
     padding:4px;
 }
 
+/* HEADER TANPA GARIS */
 .header td{
-    border:1px solid black;
-}
-
-.no-border td{
     border:none;
 }
 
-.center{
-    text-align:center;
+.table-barang {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 10px;
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+/* HEADER */
+.table-barang thead th {
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    padding: 4px;
+}
+
+/* ISI */
+.table-barang td {
+    padding: 4px;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+/* 🔥 GARIS HALUS ANTAR ROW */
+.table-barang tbody tr {
+    border-bottom: 0.3px solid #999;
+}
+
+.table-barang tbody tr:last-child {
+    border-bottom: none;
+}
+
+.center {
+    text-align: center;
 }
 
 .right{
@@ -85,41 +117,36 @@ Nomor: <?= $permintaan->nomor_nota ?>
 <br><br>
 
 <p style="text-align:justify">
-Dalam rangka Operasional Kebersihan Sarana Prasarana Kantor pada pelaksanaan tugas
-kedinasan diajukan permintaan pengeluaran barang persediaan dengan rincian sebagai berikut:
+Dalam rangka Operasional Kebersihan Sarana Prasarana Kantor pada pelaksanaan tugas kedinasan
+Sekretariat yang berasal dari hasil pengadaan barang pada sub kegiatan Penyediaan Jasa Pelayanan
+Umum Kantor diajukan permintaan pengeluaran barang persediaan, dengan rincian sebagai berikut:
 </p>
 
 <br>
 
 <!-- TABEL BARANG -->
 
-<table width="100%">
+<table width="100%" cellpadding="4" cellspacing="0" border="1">
 
-<tr class="center">
-
-<th width="5%">No</th>
-<th width="40%">Nama Barang/Item</th>
-<th width="10%">Jumlah</th>
-<th width="10%">Satuan</th>
-<th width="20%">Keperluan</th>
-<th width="15%">Keterangan</th>
-
+<tr style="text-align:center; font-weight:bold;">
+    <th width="30">No</th>
+    <th width="200">Nama Barang/Item</th>
+    <th width="60">Jumlah</th>
+    <th width="60">Satuan</th>
+    <th width="110">Keperluan</th>
+    <th width="80">Keterangan</th>
 </tr>
 
 <?php $no=1; foreach($detail as $d): ?>
-
 <tr>
-
-<td class="center"><?= $no++ ?></td>
-<td><?= $d->nama_barang ?></td>
-<td class="center"><?= $d->jumlah ?></td>
-<td class="center"><?= $d->satuan ?? '-' ?></td>
-<td><?= $d->keperluan ?></td>
-<td><?= $d->keterangan ?></td>
-
+    <td align="center"><?= $no++ ?></td>
+    <td><?= $d->nama_barang ?></td>
+    <td align="center"><?= $d->jumlah ?></td>
+    <td align="center"><?= $d->satuan ?? '-' ?></td>
+    <td><?= $d->keperluan ?></td>
+    <td><?= $d->keterangan ?></td>
 </tr>
-
-<?php endforeach ?>
+<?php endforeach; ?>
 
 </table>
 

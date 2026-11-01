@@ -232,11 +232,11 @@
                             style="width: 220px;">
 
                        <!-- Export -->
-                      <a href="<?= site_url('master_lokasi/export_excel') ?>" 
+                      <a href="<?= base_url('admin/master_lokasi/export_excel') ?>" 
                         class="btn btn-success btn-sm">
                         Export Excel
                       </a>
-                      <a href="<?= site_url('master_lokasi/export_pdf') ?>" 
+                      <a href="<?= base_url('admin/master_lokasi/export_pdf') ?>" 
                         class="btn btn-primary btn-sm">
                         Export PDF
                       </a>
@@ -299,7 +299,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                    <form action="<?= site_url('master_lokasi/tambah') ?>" method="post">
+                    <form action="<?= base_url('admin/master_lokasi/tambah') ?>" method="post">
 
                         <div class="modal-header">
                         <h5 class="modal-title">Tambah Lokasi</h5>

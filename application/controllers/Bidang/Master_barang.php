@@ -111,7 +111,7 @@ class Master_barang extends CI_Controller {
 
         $this->Master_barang_model->insert_barang($data);
 
-        redirect('master_barang');
+        redirect('bidang/master_barang');
     }
 
    public function export_excel()

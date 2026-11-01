@@ -14,51 +14,29 @@ class Riwayat extends CI_Controller {
 {
     $this->load->library('pagination');
 
+    $keyword = $this->input->get('search') ?? '';
+
     $config['base_url']   = site_url('bidang/riwayat/index');
-    $config['total_rows'] = $this->Riwayat_model->count_barang();
+    $config['total_rows'] = $this->Riwayat_model->count_barang($keyword);
     $config['per_page']   = 10;
     $config['uri_segment'] = 4;
-    
 
-    // 🔥 STYLE (biar sama kayak kamu)
-    $config['use_page_numbers'] = FALSE;
-    $config['reuse_query_string'] = TRUE;
-
-    $config['full_tag_open'] = '<nav><ul class="pagination justify-content-center">';
-    $config['full_tag_close'] = '</ul></nav>';
-
-    $config['prev_link'] = '<i class="bx bx-chevrons-left"></i>';
-    $config['next_link'] = '<i class="bx bx-chevrons-right"></i>';
-
-    $config['prev_tag_open'] = '<li class="page-item">';
-    $config['prev_tag_close'] = '</li>';
-
-    $config['next_tag_open'] = '<li class="page-item">';
-    $config['next_tag_close'] = '</li>';
-
-    $config['num_tag_open'] = '<li class="page-item">';
-    $config['num_tag_close'] = '</li>';
-
-    $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
-    $config['cur_tag_close'] = '</a></li>';
-
-    $config['attributes'] = ['class' => 'page-link'];
+    $config['suffix'] = '?search=' . urlencode($keyword);
+    $config['first_url'] = $config['base_url'] . $config['suffix'];
 
     $this->pagination->initialize($config);
 
     $page = $this->uri->segment(4);
+    if (!ctype_digit((string)$page)) $page = 0;
 
-    if (!ctype_digit((string)$page)) {
-        $page = 0;
-    }
-
-    // 🔥 ambil data sesuai limit
     $data['barang'] = $this->Riwayat_model->get_barang_paginated(
         $config['per_page'],
-        $page
+        $page,
+        $keyword
     );
 
     $data['links'] = $this->pagination->create_links();
+    $data['keyword'] = $keyword;
 
     $this->load->view('bidang/riwayat', $data);
 }
@@ -87,5 +65,45 @@ class Riwayat extends CI_Controller {
             'riwayat' => $riwayat
         ]);
     }
+
+    public function export_riwayat($id)
+{
+    $this->load->library('pdf');
+
+    // 🔥 ambil data barang
+    $barang = $this->Riwayat_model->get_barang_by_id($id);
+
+    if (!$barang) {
+        show_error('Data tidak ditemukan');
+    }
+
+    // 🔥 ambil riwayat
+    $riwayat = $this->Riwayat_model->get_riwayat($id);
+
+    $data = [
+        'barang'  => $barang,
+        'riwayat' => $riwayat
+    ];
+
+    // 🔥 load view jadi HTML
+    $html = $this->load->view('bidang/export_riwayat', $data, true);
+
+    // 🔥 TCPDF (SAMA KAYAK PUNYA KAMU)
+    $pdf = new Pdf('L','mm','A4'); // 🔥 buat dulu
+    
+    $pdf->SetMargins(10,10,10);
+    $pdf->SetAutoPageBreak(TRUE, 10);
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+
+    $pdf->AddPage();
+    $pdf->SetFont('times','',11);
+    $pdf->setCellHeightRatio(1.5);
+
+    $pdf->writeHTML($html, true, false, true, false, '');
+
+    $pdf->Output('Riwayat_Barang.pdf','I');
+}
 
 }

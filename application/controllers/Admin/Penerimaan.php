@@ -112,7 +112,7 @@ class Penerimaan extends CI_Controller {
         }
     }
 
-    redirect('penerimaan');
+    redirect('admin/penerimaan');
 }
 
 public function get_detail($kode_unik = null)
@@ -205,6 +205,8 @@ public function export_nota($kode_unik)
     $pdf = new Pdf('P','mm','A4');
     $pdf->SetMargins(10,10,10);
     $pdf->SetFont('times','',11);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
 
     $pdf->AddPage();
     $pdf->writeHTML($html, true, false, true, false, '');

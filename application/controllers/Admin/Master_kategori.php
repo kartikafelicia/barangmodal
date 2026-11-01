@@ -26,7 +26,7 @@ class Master_kategori extends CI_Controller {
 
         $this->db->insert('master_kategori', $data);
 
-        redirect('master_kategori');
+        redirect('admin/master_kategori');
     }
 
     public function export_excel()
@@ -65,6 +65,19 @@ public function export_pdf()
     $pdf->writeHTML($html,true,false,true,false,'');
 
     $pdf->Output('data_kategori.pdf','I');
+}
+
+public function update()
+{
+    $id = $this->input->post('id');
+
+    $data = [
+        'kategori' => $this->input->post('kategori', true)
+    ];
+
+    $this->Master_kategori_model->update($id, $data);
+
+    echo json_encode(['status' => 'success']);
 }
 
 public function delete($id)
